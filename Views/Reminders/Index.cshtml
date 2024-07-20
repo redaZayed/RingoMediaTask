@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Core.Models.Reminder>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date and Time</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.ReminderDateTime</td>
+                <td>
+                    <!-- Edit Button -->
+                    <button class="btn btn-primary" data-id="@item.ReminderId" data-bs-toggle="modal" data-bs-target="#modalCrud">Edit</button>
+                    <!-- Delete Button -->
+                    <button class="btn btn-danger" data-id="@item.ReminderId" data-bs-toggle="modal" data-bs-target="#modalDelete">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Create Button -->
+<button class="btn btn-success" data-bs-toggle="modal" 
+data-bs-target="#modalCrud">Create Reminder</button>
+
+
+@section Scripts
+    {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        // Load create/edit form via AJAX
+        $('#modalCrud').on('show.bs.modal', function(event) {
+           
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var modal = $(this);
+            var url = '';
+            
+            if (id) {
+                url = '/Reminders/Edit/' + id;
+            } else {
+                url = '/Reminders/Create';
+            }
+            
+            $.get(url, function(data) {
+                modal.find('.modal-body').html(data);
+                modal.find('.modal-title').text(id ? 'Edit' : 'Create');
+
+            });
+        });
+
+        // Handle form submission via AJAX
+        $(document).on('submit', '#departmentForm, #reminderForm', function (event) {
+            event.preventDefault();
+           
+            var form = $(this);
+            var actionUrl = form.attr('action');
+            
+            $.ajax({
+                type: form.attr('method'),
+                url: actionUrl,
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        $('#modalCrud').modal('hide');
+                        location.reload();
+                    } else {
+                        form.html($(response).find('form').html());
+                    }
+                }
+            });
+        });
+
+        // Handle delete confirmation
+        $('#modalDelete').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var form = $(this).find('#deleteForm');
+            form.attr('action', '/Reminders/Delete/' + id);
+        });
+    });
+
+   function onFormSuccess() {
+        $('#modalCrud,#modalDelete').modal('hide');
+        location.reload();
+    }
+</script>
+}

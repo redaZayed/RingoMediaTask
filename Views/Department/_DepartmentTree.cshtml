@@ -1,0 +1,14 @@
+﻿@model Core.Models.Department
+<li>
+    <span>@Model.DepartmentName</span>
+    @if (Model.SubDepartments != null && Model.SubDepartments.Any())
+    {
+        <ul>
+            @foreach(var Sub_depart in Model.SubDepartments)
+            {
+                @await Html.PartialAsync("_DepartmentTree",Sub_depart)                
+            }
+        </ul>
+        
+    }
+</li>

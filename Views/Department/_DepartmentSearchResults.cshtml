@@ -1,0 +1,22 @@
+﻿@model List<Core.Models.Department>
+
+<div>
+    <h3>Search Results</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Department Name</th>
+                <th>Parent Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var department in Model)
+            {
+                <tr>
+                    <td>@department.DepartmentName</td>
+                    <td>@(department.ParentDepartment?.DepartmentName ?? "None")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

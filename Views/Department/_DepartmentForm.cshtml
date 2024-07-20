@@ -1,0 +1,26 @@
+﻿@model Core.Models.Department
+<form  id="departmentForm" method="post" asp-action="@(Model?.DepartmentId > 0 ? "Edit" : "Create")">
+    <div class="mb-3">
+        <label for="Name" class="form-label">Department Name</label>
+        @Html.TextBoxFor(m => m.DepartmentName, new { @class = "form-control", id = "DepartmentName" })
+        @Html.ValidationMessageFor(m => m.DepartmentName)
+    </div>
+    <div class="mb-3">
+        <label for="DepartmentLogo"  class="form-label">Department Logo</label>
+         @Html.TextBoxFor(m => m.DepartmentLogo, new { @class = "form-control", id = "DepartmentLogo" })
+         
+        @Html.ValidationMessageFor(m => m.DepartmentLogo)
+    </div>
+    <div class="mb-3">
+        <label for="ParentDepartmentId" class="form-label">Parent Department</label>
+            <select class="form-select js-select2" data-placeholder="ParentDepartmentId"
+             asp-for="ParentDepartmentId" asp-items="@ViewBag.Departments">
+                <option value="">Select Department Department</option>
+            </select>
+        @Html.ValidationMessageFor(m => m.ParentDepartmentId)
+    </div>
+      <div class="modal-footer">
+                <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" name="modalCrud" id="modalCrud">Save</button>
+            </div>
+</form>

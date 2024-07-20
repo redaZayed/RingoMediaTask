@@ -1,0 +1,21 @@
+﻿@model Core.Models.Reminder
+
+
+<form id="reminderForm" method="post" asp-action="@(Model?.ReminderId > 0 ? "Edit" : "Create")">
+    <div class="mb-3">
+        <label for="Title" class="form-label">Title</label>
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control", id = "Title" })
+        @Html.ValidationMessageFor(m => m.Title)
+        @Html.HiddenFor(m=>Model.ReminderId)
+    </div>
+    <div class="mb-3">
+        <label for="DateTime" class="form-label">Date and Time</label>
+        @Html.TextBoxFor(m => m.ReminderDateTime, "{0:yyyy-MM-ddTHH:mm}",
+        new { @class = "form-control", type = "datetime-local", id = "ReminderDateTime" })
+        @Html.ValidationMessageFor(m => m.ReminderDateTime)
+    </div>
+     <div class="modal-footer">
+                <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit"  name="modalCrud" id="modalCrud"  class="btn btn-primary"  >Save</button>
+            </div>
+</form>
